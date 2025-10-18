@@ -1,0 +1,137 @@
+[
+    {
+        "id": 1,
+        "name": "Ganesha",
+        "image": "/design/1.png"
+    },
+    {
+        "id": 2,
+        "name": "Lakshmi",
+        "image": "/design/2.png"
+    },
+    {
+        "id": 3,
+        "name": "Shiva",
+        "image": "/design/3.png"
+    },
+    {
+        "id": 4,
+        "name": "Kartikeya",
+        "image": "/design/4.png"
+    },
+    {
+        "id": 5,
+        "name": "Saraswati",
+        "image": "/design/5.png"
+    },
+    {
+        "id": 6,
+        "name": "Parvati",
+        "image": "/design/6.png"
+    },
+    {
+        "id": 7,
+        "name": "Hanuman",
+        "image": "/design/7.png"
+    },
+    {
+        "id": 8,
+        "name": "Vishnu",
+        "image": "/design/8.png"
+    },
+    {
+        "id": 9,
+        "name": "Durga",
+        "image": "/design/9.png"
+    },
+    {
+        "id": 10,
+        "name": "Krishna",
+        "image": "/design/10.png"
+    },
+    {
+        "id": 11,
+        "name": "Rama",
+        "image": "/design/11.png"
+    },
+    {
+        "id": 12,
+        "name": "Kali",
+        "image": "/design/12.png"
+    },    
+    {
+        "id": 13,
+        "name": "Surya",
+        "image": "/design/13.png"
+    },
+    {
+        "id": 14,
+        "name": "Chandra",
+        "image": "/design/14.png"
+    },
+    {
+        "id": 15,
+        "name": "Budh",
+        "image": "/design/15.png"
+    },
+    {
+        "id": 16,
+        "name": "Shukra",
+        "image": "/design/16.png"
+    },
+    {
+        "id": 17,
+        "name": "Mangala",
+        "image": "/design/17.png"
+    },
+    {
+        "id": 18,
+        "name": "Brihaspati",
+        "image": "/design/18.png"
+    },
+    {
+        "id": 19,
+        "name": "Shani",
+        "image": "/design/19.png"
+    },
+    {
+        "id": 20,
+        "name": "Rahu",
+        "image": "/design/20.png"
+    },
+    {
+        "id": 21,
+        "name": "Ketu",
+        "image": "/design/21.png"
+    },
+    {
+        "id": 22,
+        "name": "Peacock",
+        "image": "/design/22.png"
+    },
+    {
+        "id": 23,
+        "name": "Lotus",
+        "image": "/design/23.png"
+    },
+    {
+        "id": 24,
+        "name": "Shankh",
+        "image": "/design/24.png"
+    },
+    {
+        "id": 25,
+        "name": "Kalash",
+        "image": "/design/25.png"
+    },
+    {
+        "id": 26,
+        "name": "Trishul",
+        "image": "/design/26.png"
+    },
+    {
+        "id": 27,
+        "name": "Naga",
+        "image": "/design/27.png"
+    }
+]

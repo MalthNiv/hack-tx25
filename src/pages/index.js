@@ -5,7 +5,7 @@ import TeamSection from "../components/TeamSection";
 import cardsData from "../data/cards.json";
 
 export default function Home() {
-    const [selectedCard, setSelecteCard] = useState(null);
+    const [selectedCard, setSelectedCard] = useState(null);
 
 return (
     <div className="min-h-screen bg-white p-8"> 

@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Niva Malthankar",
+        "photo": "/design/niva.png",
+        "major": "Computer Science",
+        "linkedin": "https://www.linkedin.com/in/malthankarniva/"
+    },
+    {
+        "name": "Rujula Padali",
+        "photo": "/design/rujula.png",
+        "major": "Arts and Entertainment Technology",
+        "linkedin": "https://www.linkedin.com/in/padmasai-rujula-padala-415370262/"
+    },
+    {
+        "name": "Sahasra Tummala",
+        "photo": "/design/sahasra.png",
+        "major": "Computer Science",
+        "linkedin": "https://www.linkedin.com/in/sahasratummala/"
+    }, 
+    {
+        "name":"Uma Bhadra",
+        "photo": "/design/uma.png",
+        "major": "Electrical and Computer Engineering (ECE)",
+        "linkedin": "https://www.linkedin.com/in/umabhadra/"
+    }
+]
