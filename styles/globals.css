@@ -24,3 +24,15 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@font-face {
+  font-family: 'EFCO Brookshire';
+  src: url('/fonts/EFCO Brookshire Regular.ttf') format('ttf');
+  font-weight: 400;
+  font-style: normal;
+  font-dsiplay: swap;
+}
+
+.font-welcome {
+  font-family: 'EPCO Brookshire';
+}
