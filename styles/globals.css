@@ -34,4 +34,12 @@ body {
 
 .font-welcome {
   font-family: 'EFCO Brookshire', sans-serif;
+  font-family: 'Glacial Indifference Regular';
+  src: url('/fonts/GlacialIndifference-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-GIR {
+  font-family: 'Glacial Indifference Regular', sans-serif;
 }
