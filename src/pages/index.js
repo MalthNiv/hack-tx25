@@ -27,7 +27,7 @@ export default function Home() {
             </a>
 
             <div id="card-deck">
-                {!selectedCard && <CardDeck cards={cardsData} onSelect={setSelectedCard} />}
+                {<CardDeck cards={cardsData} onSelect={setSelectedCard} />}
             </div>
 
             {/* Card Detail Section */}

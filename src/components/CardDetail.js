@@ -5,7 +5,7 @@ export default function CardDetail({ card, onBack }) {
 
     return (
 
-        <div className="text-center mt-10">
+        <div className="text-center mt-10 py-20">
             {card && (
                 <div className="mt-6">
                     <img
