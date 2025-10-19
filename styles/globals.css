@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #01051a;
   --foreground: #171717;
 }
 
@@ -14,13 +14,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #01051a;
     --foreground: #ededed;
   }
 }
 
 body {
-  background: var(--background);
+  background: #01051a;
   color: var(--foreground);
 }
 
@@ -33,7 +33,10 @@ body {
 }
 
 .font-welcome {
-  font-family: 'EFCO Brookshire', sans-serif;
+  font-family: 'EFCO Brookshire', serif;
+}
+
+@font-face {
   font-family: 'Glacial Indifference Regular';
   src: url('/fonts/GlacialIndifference-Regular.otf') format('opentype');
   font-weight: normal;
@@ -42,4 +45,97 @@ body {
 
 .font-GIR {
   font-family: 'Glacial Indifference Regular', sans-serif;
+}
+
+@keyframes spin-3d {
+  from {
+    transform: perspective(1000px) rotateY(360deg);
+    opacity: 0;
+  }
+
+  to {
+    transform: perspective(1000px) rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+.animate-spin-3d {
+  animation: spin-3d 1s ease-out;
+  transform-style: preserve-3d;
+}
+
+.card-container {
+  perspective: 1000px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 0.5rem;
+}
+
+.card-front {
+  transform: rotateY(180deg);
+}
+
+.card-back {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+@keyframes pulse-scale {
+
+  0%,
+  100% {
+    transform: scale(1) rotateY(0deg);
+  }
+
+  50% {
+    transform: scale(1.03) rotateY(0deg);
+  }
+}
+
+.pulse-until-click {
+  animation: pulse-scale 2s ease-in-out infinite
+}
+
+.pulse-until-click.flipped {
+  animation: none;
+}
+
+/* Fix white line during smooth scroll */
+.overflow-y-auto {
+  will-change: scroll-position;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+/* Ensure no gap during scroll */
+.overflow-y-auto>* {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }

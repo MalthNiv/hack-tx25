@@ -15,43 +15,47 @@ export default function Home() {
     }, []);
 
     return (
-    <div className="min-h-screen bg-white"> 
-        <header
-            className="relative w-full h-screen flex flex-col items-center justify-center text-center bg-cover bg-center"
-            style={{ backgroundImage: "url('/design/welcome-bg.png')" }}
-        >
-        <img
-            src="/design/text.png"
-            alt="Some text"
-            className="w-full h-screen"
-        />
-        </header>
-        <button
-            onClick={() => {
-            const section = document.getElementById("card-deck");
-            if (section) {
-                section.scrollIntoView({ behavior: "smooth" });
-            }
-            }}
-            className="absolute bottom-11 right-[28%] w-16 h-16 md:w-20 md:h-20 animate-bounce hover:scale-110 transition-transform"
-            title="Scroll Down"
-        >
-            <img
-            src="/design/scroll-down.png"
-            alt="Scroll Down"
-            className="w-full h-full object-contain"
-            />
-        </button>
-        
-        <div id="card-deck" className="py-16">
-            {!selectedCard && <CardDeck cards={cardsData} onSelect={setSelectedCard} />}
+        <div className="min-h-screen bg-[#01051a]">
+            <header
+                className="relative w-full h-screen flex flex-col items-center justify-center text-center bg-cover bg-center"
+                style={{ backgroundImage: "url('/design/welcome-bg.png')" }}
+            >
+                <img
+                    src="/design/text.png"
+                    alt="Some text"
+                    className="w-full h-screen"
+                />
+            </header>
+            <button
+                onClick={() => {
+                    const section = document.getElementById("card-deck");
+                    if (section) {
+                        section.scrollIntoView({ behavior: "smooth" });
+                    }
+                }}
+                className="absolute w-16 h-16 md:w-20 md:h-20 animate-bounce hover:scale-110 transition-transform"
+                style={{
+                    bottom: "8vh", 
+                    right: "30vw",   
+                }}
+                title="Scroll Down"
+            >
+                <img
+                    src="/design/scroll-down.png"
+                    alt="Scroll Down"
+                    className="w-full h-full object-contain"
+                />
+            </button>
+
+            <div id="card-deck">
+                {!selectedCard && <CardDeck cards={cardsData} onSelect={setSelectedCard} />}
+            </div>
+
+            {/* Card Detail Section }
+            {selectedCard && <CardDetail card={selectedCard} onBack={() => setSelectedCard(null)} />*/}
+
+            {/* Team Section */}
+            <TeamSection />
         </div>
-        
-        {/* Card Detail Section */} 
-        {selectedCard && <CardDetail card={selectedCard} onBack={() => setSelectedCard(null)} />} 
-            
-        {/* Team Section */} 
-        <TeamSection /> 
-        </div>
-        ); 
+    );
 }
