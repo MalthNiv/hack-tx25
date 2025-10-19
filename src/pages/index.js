@@ -35,15 +35,15 @@ export default function Home() {
                 }}
                 className="absolute w-16 h-16 md:w-20 md:h-20 animate-bounce hover:scale-110 transition-transform"
                 style={{
-                    bottom: "8vh", 
-                    right: "30vw",   
+                    bottom: "6vh", 
+                    right: "29vw",   
                 }}
                 title="Scroll Down"
             >
                 <img
                     src="/design/scroll-down.png"
                     alt="Scroll Down"
-                    className="w-full h-full object-contain"
+                    className="md:w-18.5 md:h-18.5 object-contain"
                 />
             </button>
 

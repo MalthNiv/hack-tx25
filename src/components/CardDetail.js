@@ -188,8 +188,8 @@ export default function CardDetail({ card, onBack }) {
                                     )}
                                     <div
                                         className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg max-w-[75%] break-words shadow ${msg.sender === "user"
-                                                ? "bg-[#01051a] text-white rounded-br-none"
-                                                : "bg-[#e9d8a0] text-[#01051a] rounded-bl-none"
+                                            ? "bg-[#01051a] text-white rounded-br-none"
+                                            : "bg-[#e9d8a0] text-[#01051a] rounded-bl-none"
                                             }`}
                                     >
                                         {msg.text}

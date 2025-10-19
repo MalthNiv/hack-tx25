@@ -19,10 +19,29 @@ export default function CardDeck({ cards }) {
     const angleIncrement = total > 1 ? spread / (total - 1) : 0;
     const back_of_card = "/design/back-of-card.png";
 
-    // Dynamic radius based on screen width
+    // Responsive card size
+    const getCardSize = () => {
+        if (typeof window === "undefined") return { width: 220, height: 293 };
+        const baseWidth = 1920; // design reference width
+        const scaleFactor = Math.min(window.innerWidth / baseWidth, 1); // never go bigger than design
+        const width = Math.max(Math.min(288 * scaleFactor, 288), 180); // min 180, max 288
+        return { width, height: width * 4 / 3 };
+    };
+    const { width: cardWidth, height: cardHeight } = getCardSize();
+
+    // Responsive radius
     const getRadius = () => {
-        if (typeof window === "undefined") return 300;
-        return 250 + Math.min(window.innerWidth / 8, 120); // bigger fan spread
+        const minRadius = 180;  // smallest spread
+        const maxRadius = 300;  // largest spread
+        const baseWidth = 1440; // design width reference
+
+        if (typeof window === "undefined") return maxRadius;
+
+        let scale = window.innerWidth / baseWidth;
+        scale = Math.min(scale, 1);   // cap max
+        scale = Math.max(scale, 0.5); // cap min
+
+        return minRadius + (maxRadius - minRadius) * scale;
     };
     const radius = getRadius();
 
@@ -37,9 +56,7 @@ export default function CardDeck({ cards }) {
             }
 
             setGlowingCard(clickedCard.id);
-            setSelectedCard({ ...clickedCard });
 
-            // 2️⃣ Pick a random card for the detail panel
             if (cards.length > 0) {
                 const randomIndex = Math.floor(Math.random() * cards.length);
                 const randomCard = cards[randomIndex];
@@ -47,19 +64,18 @@ export default function CardDeck({ cards }) {
             }
 
             setFadeOut(false);
-
             setTimeout(() => setIsSelecting(false), 700);
         },
-        [isSelecting]
+        [isSelecting, cards]
     );
 
-    // Auto-scroll to selected card details
+    // Auto-scroll to the top of the deck
     useEffect(() => {
-        if (!selectedCard || !detailsRef.current) return;
+        if (!selectedCard || !deckRef.current) return;
         setIsAutoScrolling(true);
 
         const targetPosition =
-            detailsRef.current.getBoundingClientRect().top + window.scrollY;
+              detailsRef.current.offsetTop + detailsRef.current.offsetHeight - window.innerHeight;
         const startPosition = window.scrollY;
         const distance = targetPosition - startPosition;
         const duration = 600;
@@ -117,13 +133,21 @@ export default function CardDeck({ cards }) {
         };
     }, [selectedCard, isAutoScrolling]);
 
+    // Dynamic deck height for small screens
+    const getDeckHeight = () => {
+        if (typeof window === "undefined") return 700;
+        return Math.max(window.innerHeight * 0.6, 400); // min 400px, 60% of viewport
+    };
+
+    const deckHeight = getDeckHeight();
+
     return (
         <div className="flex flex-col items-center space-y-8">
             {/* Card deck */}
             <div
                 ref={deckRef}
-                className="relative w-full h-[700px] flex items-center justify-center bg-[url('/design/page_design_2.png')] bg-cover bg-center overflow-visible"
-                style={{ pointerEvents: isSelecting ? "none" : "auto" }}
+                className="relative w-full flex items-center justify-center bg-[url('/design/page_design_2.png')] bg-cover bg-center overflow-visible"
+                style={{ height: deckHeight, pointerEvents: isSelecting ? "none" : "auto" }}
             >
                 {cards.map((card, i) => {
                     const angle = startAngle + angleIncrement * i;
@@ -137,8 +161,10 @@ export default function CardDeck({ cards }) {
                         <motion.div
                             key={card.id}
                             onPointerUp={() => handleCardClick(card)}
-                            className="absolute w-72 h-96 rounded-2xl shadow-2xl bg-white cursor-pointer flex items-center justify-center transition-transform hover:scale-110 hover:z-50"
+                            className="absolute rounded-2xl shadow-2xl bg-white cursor-pointer flex items-center justify-center transition-transform hover:scale-110 hover:z-50"
                             style={{
+                                width: cardWidth,
+                                height: cardHeight,
                                 transform: `translate(${xOffset}px, ${yOffset}px) rotate(${angle}deg)`,
                                 transformOrigin: "center 170%",
                                 zIndex: baseZ,
