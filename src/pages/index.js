@@ -3,28 +3,45 @@ import CardDeck from "../components/CardDeck";
 import CardDetail from "../components/CardDetail";
 import TeamSection from "../components/TeamSection";
 import cardsData from "../data/cards.json";
+import { useEffect } from "react";
 
 export default function Home() {
     const [selectedCard, setSelectedCard] = useState(null);
 
-return (
+    useEffect(() => {
+        window.scrollTo(0, 0);
+
+        history.replaceState(null, "", window.location.pathname);
+    }, []);
+
+    return (
     <div className="min-h-screen bg-white"> 
         <header
             className="relative w-full h-screen flex flex-col items-center justify-center text-center bg-cover bg-center"
             style={{ backgroundImage: "url('/design/welcome-bg.png')" }}
         >
+        <img
+            src="/design/text.png"
+            alt="Some text"
+            className="w-full h-screen"
+        />
         </header>
-        <a
-            href="#card-deck"
-            className="absolute bottom-11 right-[28%] transform -translate-x-1/2 w-16 h-16 md:w-20 md:h-20 animate-bounce hover:scale-110 transition-transform"
+        <button
+            onClick={() => {
+            const section = document.getElementById("card-deck");
+            if (section) {
+                section.scrollIntoView({ behavior: "smooth" });
+            }
+            }}
+            className="absolute bottom-11 right-[28%] w-16 h-16 md:w-20 md:h-20 animate-bounce hover:scale-110 transition-transform"
             title="Scroll Down"
         >
             <img
-                src="/design/scroll-down.png"
-                alt="Scroll Down"
-                className="w-full h-full object-contain"
+            src="/design/scroll-down.png"
+            alt="Scroll Down"
+            className="w-full h-full object-contain"
             />
-        </a>
+        </button>
         
         <div id="card-deck" className="py-16">
             {!selectedCard && <CardDeck cards={cardsData} onSelect={setSelectedCard} />}

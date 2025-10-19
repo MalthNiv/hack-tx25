@@ -13,15 +13,15 @@ export default async function handler(req, res) {
                 "Authorization": `Bearer ${GEMINI_API_KEY}`
             },
             body: JSON.stringify({
-                prompt: `Give a mystical, oracle-style interpretation for a card named "${cardName}". Keep it short and mystical.`
+                prompt: `Act as a fortune-teller from South India, specializing in Chilaka Josyam. Your interpretation of the chosen card must be in-depth, mystical, but not too cheesy, focusing on future predictions and direct advice. The card chosen is ${cardName}".`
             })
         });
 
         const json = await response.json();
-        const interpretation = json.text || json.output || "No interpretation returned";
+        const interpretation = json.text || json.output || "No interpretation returned.";
         res.status(200).json({ interpretation });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Failed to fetch Gemini interpretation" });
+        res.status(500).json({ error: "Failed to fetch Gemini interpretation." });
     }
 }
