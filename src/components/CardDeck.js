@@ -46,9 +46,11 @@ export default function CardDeck({ cards }) {
 
 
 
-        // Base card width: 15% of viewport width, but scale up on larger screens
-
-        const width = Math.min(Math.max(vw * 0.15, 160), 350);
+        // Base card width: responsive to viewport
+        // Smaller minimum for mobile screens
+        const minWidth = vw < 640 ? 100 : 160;
+        const maxWidth = vw < 640 ? 140 : 350;
+        const width = Math.min(Math.max(vw * 0.15, minWidth), maxWidth);
 
         const height = (width * 4) / 3; // maintain 4:3 ratio
 
@@ -60,31 +62,74 @@ export default function CardDeck({ cards }) {
 
 
 
-    // --- Responsive radius ---
+    // --- Calculate how many cards can fit on screen ---
 
-    const getRadius = () => {
+    const getMaxVisibleCards = () => {
 
-        if (typeof window === "undefined") return 250;
+        if (typeof window === "undefined") return total;
 
         const vw = window.innerWidth;
 
-        const vh = window.innerHeight;
+        const availableWidth = vw - 30; // 15px padding on each side
 
+        // Estimate: each card needs roughly its width plus some spacing
 
+        // For a fan, we need to account for the angle spread
 
-        // Make radius proportional to viewport, bigger on desktop
+        // Use different factors based on screen size
+        let factor;
+        if (vw >= 1920) {
+            factor = 4.5; // Desktop - show all cards
+        } else if (vw >= 1024) {
+            factor = 3.5; // Tablet
+        } else if (vw >= 640) {
+            factor = 2.5; // Small tablet
+        } else {
+            factor = 2.5; // Mobile - increased from 1.8 to show more cards
+        }
 
-        const radius = Math.min(Math.max(vw * 0.2, 160), vh * 0.4);
+        const estimatedMax = Math.floor((availableWidth / cardWidth) * factor);
 
-        return radius;
+        // Responsive minimum: fewer cards on mobile, more on desktop
+        const minCards = vw < 640 ? 8 : vw >= 1920 ? total : 10;
+
+        return Math.max(minCards, Math.min(estimatedMax, total));
 
     };
 
-    const radius = getRadius();
+    const maxVisibleCards = getMaxVisibleCards();
+
+    // Select evenly spaced cards from the full deck
+
+    const getVisibleCards = () => {
+
+        if (maxVisibleCards >= total) return cards;
+
+        // Select evenly spaced cards from the deck
+
+        const step = total / maxVisibleCards;
+
+        const visibleIndices = [];
+
+        for (let i = 0; i < maxVisibleCards; i++) {
+
+            const index = Math.floor(i * step);
+
+            visibleIndices.push(index);
+
+        }
+
+        return visibleIndices.map(idx => cards[idx]);
+
+    };
+
+    const visibleCards = getVisibleCards();
+
+    const visibleTotal = visibleCards.length;
 
 
 
-    // --- Dynamic spread to fit all cards ---
+    // --- Dynamic spread to fit visible cards ---
 
     const getSpread = () => {
 
@@ -106,9 +151,45 @@ export default function CardDeck({ cards }) {
 
     const spread = getSpread();
 
+
+
+    // --- Responsive radius ---
+
+    const getRadius = () => {
+
+        if (typeof window === "undefined") return 250;
+
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+
+        // Calculate spread first to determine max radius
+        const maxAngle = Math.abs(spread / 2);
+        const maxAngleRad = (maxAngle * Math.PI) / 180;
+
+        // Calculate maximum horizontal extent needed
+        // Account for card width and padding (leave 15px padding on each side)
+        const availableWidth = vw - 30; // 15px padding on each side
+        const maxXOffset = (availableWidth / 2) - (cardWidth / 2);
+
+        // Calculate radius that fits within viewport
+        // xOffset = sin(theta) * radius, so radius = xOffset / sin(theta)
+        const calculatedRadius = maxAngleRad > 0 ? maxXOffset / Math.sin(maxAngleRad) : vw * 0.2;
+
+        // Make radius proportional to viewport, but constrained to fit
+        const radius = Math.min(
+            Math.max(calculatedRadius, 160),
+            Math.min(vw * 0.2, vh * 0.4)
+        );
+
+        return radius;
+
+    };
+
+    const radius = getRadius();
+
     const startAngle = -spread / 2;
 
-    const angleIncrement = total > 1 ? spread / (total - 1) : 0;
+    const angleIncrement = visibleTotal > 1 ? spread / (visibleTotal - 1) : 0;
 
 
 
@@ -292,7 +373,7 @@ export default function CardDeck({ cards }) {
 
                 ref={deckRef}
 
-                className="relative w-full flex items-center justify-center bg-[url('/design/page_design_2.png')] bg-cover bg-center overflow-visible px-2 sm:px-4"
+                className="relative w-full flex items-center justify-center bg-[url('/design/page_design_2.png')] bg-cover bg-center overflow-visible"
 
                 style={{
 
@@ -302,15 +383,19 @@ export default function CardDeck({ cards }) {
 
                     pointerEvents: isSelecting ? "none" : "auto",
 
+                    paddingLeft: "15px",
+
+                    paddingRight: "15px",
+
                 }}
 
             >
 
-                {cards.map((card, i) => {
+                {visibleCards.map((card, i) => {
 
                     const angle = startAngle + angleIncrement * i;
 
-                    const baseZ = total - i;
+                    const baseZ = visibleTotal - i;
 
                     const theta = (angle * Math.PI) / 180;
 

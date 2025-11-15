@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-import CardDeck from "../components/CardDeck";
+import dynamic from "next/dynamic";
 
 import CardDetail from "../components/CardDetail";
 
@@ -10,11 +10,25 @@ import ScrollButton from "../components/ScrollButton";
 
 import cardsData from "../data/cards.json";
 
+// Disable SSR for CardDeck to avoid hydration mismatches
+
+const CardDeck = dynamic(() => import("../components/CardDeck"), {
+
+    ssr: false,
+
+});
+
 
 
 export default function Home() {
 
     const [selectedCard, setSelectedCard] = useState(null);
+
+    const [showScrollButton, setShowScrollButton] = useState(false);
+
+    const headerRef = useRef(null);
+
+    const resizeObserverRef = useRef(null);
 
 
 
@@ -28,19 +42,89 @@ export default function Home() {
 
 
 
+    useEffect(() => {
+
+        const checkHeaderHeight = () => {
+
+            if (!headerRef.current) return;
+
+            const headerHeight = headerRef.current.offsetHeight;
+
+            const viewportHeight = window.innerHeight;
+
+            const threshold = viewportHeight * 0.75;
+
+            setShowScrollButton(headerHeight >= threshold);
+
+        };
+
+
+
+        // Check on mount with a small delay to ensure header is rendered
+
+        const timeoutId = setTimeout(() => {
+
+            checkHeaderHeight();
+
+            // Set up ResizeObserver after initial check
+
+            if (headerRef.current) {
+
+                resizeObserverRef.current = new ResizeObserver(() => {
+
+                    checkHeaderHeight();
+
+                });
+
+                resizeObserverRef.current.observe(headerRef.current);
+
+            }
+
+        }, 100);
+
+
+
+        // Also listen to window resize
+
+        window.addEventListener("resize", checkHeaderHeight);
+
+
+
+        return () => {
+
+            clearTimeout(timeoutId);
+
+            if (resizeObserverRef.current) {
+
+                resizeObserverRef.current.disconnect();
+
+                resizeObserverRef.current = null;
+
+            }
+
+            window.removeEventListener("resize", checkHeaderHeight);
+
+        };
+
+    }, []);
+
+
+
     return (
 
-        <div className="min-h-screen bg-[#01051a]">
+        <div className="bg-[#01051a]">
 
             <header
 
-                className="relative w-full h-screen flex items-center justify-center text-center bg-cover bg-center"
+                ref={headerRef}
+
+                className="relative aspect-16/9 flex justify-center text-center bg-contain bg-no-repeat bg-center"
 
                 style={{ backgroundImage: "url('/design/welcome-bg.png')" }}
 
             >
 
-                <ScrollButton />
+                {showScrollButton && <ScrollButton />}
 
             </header>
 
@@ -70,7 +154,7 @@ export default function Home() {
 
             <header
 
-                className="relative w-full h-screen flex items-center justify-center text-center bg-cover bg-center"
+                className="relative aspect-16/9 flex items-center justify-center text-center bg-contain bg-no-repeat bg-center"
 
                 style={{ backgroundImage: "url('/design/about.png')" }}
 
